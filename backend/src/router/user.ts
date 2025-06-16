@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { User } from "../db/model";
+import { Account, User } from "../db/model";
 import z from 'zod/v4';
 import { ApiResponse } from "../utils/ApiResponse";
 import { ApiError } from "../utils/ApiError";
@@ -47,6 +47,11 @@ userRouter.post('/signup',async (req: Request, res: Response) => {
       res.status(409).json(new ApiError(409,"User Already Exists"));
       return 
     }
+    const userId = user._id;
+    await Account.create({
+        userId,
+        balance: 1 + Math.random() * 10000
+    })
     const token =jwt.sign(user._id,`${process.env.JWT_SECRET}`);
      res.status(200).json(new ApiResponse(200,
         {
