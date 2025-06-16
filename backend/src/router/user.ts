@@ -150,4 +150,23 @@ userRouter.put('/',authMiddleware,async(req: Request, res: Response)=>{
     }
 })
 
-userRouter.get('/bulk')
+userRouter.get('/bulk',async(req:Request,res:Response)=>{
+    try {
+        const name =req.query.filter || "";
+        const users = await User.find({
+            $or:[
+                {firstName: {'$regex' : name, '$options' : 'i'}},
+                {lastName: {'$regex' : name, '$options' : 'i'}}
+            ]
+        }).select('_id userName firstName lastName')
+        if (users.length==0) {
+            res.status(200).json(new ApiResponse(200,[],"No Users Found"))
+            return
+        }
+        res.status(200).json(new ApiResponse(200,users,"Users Fetcched Successfully"))
+        return
+    } catch (error) {
+        console.log("Get users via Filter Error: ", error);
+        res.status(500).json(new ApiError(500,"Error While finding users profile"))
+    }
+})
