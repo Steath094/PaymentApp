@@ -8,9 +8,12 @@ export const accountRouter = express.Router();
 
 accountRouter.get('/balance',async(req: Request,res:Response)=>{
     try {
+        console.log(req.userId);
+        
         const balance = await Account.findOne({
             userId: req.userId
         })
+        
         res.status(200).json(new ApiResponse(200,balance,"User's Balance Fetched Succesfully"))
         return
     } catch (error) {
@@ -39,6 +42,8 @@ accountRouter.post('/transfer',async(req:Request,res:Response)=>{
         const toAccount = await Account.findOne({
             userId: to
         }).session(session);
+        console.log(to);
+        
         if (!toAccount) {
             await session.abortTransaction();
             res.status(400).json(new ApiError(400,"Invalid Account"))
@@ -52,6 +57,6 @@ accountRouter.post('/transfer',async(req:Request,res:Response)=>{
         return
     } catch (error) {
         console.log("Error While Transfering Ammount Error: ",error);
-        res.status(500).json(new ApiError(500,"Error While Transfering Ammount"))
+        res.status(500).json(new ApiError(500,"Error While Transfering Ammount",error as any))
     }
 })

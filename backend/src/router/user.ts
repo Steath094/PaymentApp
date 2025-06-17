@@ -31,8 +31,6 @@ userRouter.post('/signup',async (req: Request, res: Response) => {
     })
     
     const parsedData = requiredBody.safeParse(req.body);
-    console.log(parsedData.error);
-    
     if (!parsedData.success) {
         res.status(400).json(new ApiError(400,"Invalid Input Format"));
         return;
@@ -55,7 +53,7 @@ userRouter.post('/signup',async (req: Request, res: Response) => {
         userId,
         balance: 1 + Math.random() * 10000
     })
-    const token =jwt.sign({userId},`${process.env.JWT_SECRET}`);
+    const token =jwt.sign({id: user._id},`${process.env.JWT_SECRET}`);
      res.status(200).json(new ApiResponse(200,
         {
             userId: user._id,
