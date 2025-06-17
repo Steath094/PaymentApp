@@ -6,7 +6,6 @@ import { ApiError } from "../utils/ApiError";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 import { authMiddleware } from "../middleware";
-import { jwtSecret } from "../config";
 export const userRouter = express.Router();
 
 userRouter.post('/signup',async (req: Request, res: Response) => {
@@ -71,11 +70,6 @@ userRouter.post('/signup',async (req: Request, res: Response) => {
 })
 
 userRouter.post('/signin',async (req: Request,res: Response) =>{
-    try {
-        if (!req.userId) {
-            res.status(401).json(new ApiError(401, "Unauthorized"));
-            return
-        }
         const requiredBody = z.object({
             userName: z.string()
             .min(3,"User Should be atleast 3 character long")
@@ -108,10 +102,6 @@ userRouter.post('/signin',async (req: Request,res: Response) =>{
         }
         const token = jwt.sign({id: user._id},`${process.env.JWT_SECRET}`)
         res.status(200).json(new ApiResponse(200,token,"User Logged In successfully"))
-    } catch (error) {
-        console.log("Login Route Error: ", error);
-        res.status(500).json(new ApiError(500,"Error While User Login"))
-    }
 })
 
 
@@ -147,11 +137,12 @@ userRouter.put('/',authMiddleware,async(req: Request, res: Response)=>{
             lastName,
             password: hashedPassword
         }
-    },{new: true})
+    },{new: true}).select('-password')
     if (!user) {
         res.status(411).json(new ApiError(411,"Something went wrong"))
         return
     }
+
     res.status(200).json(new ApiResponse(200,user,"User Updated Suceessfully"))
     } catch (error) {
         console.log("Update Profile Route Error: ", error);
