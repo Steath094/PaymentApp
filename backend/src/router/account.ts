@@ -8,8 +8,6 @@ export const accountRouter = express.Router();
 
 accountRouter.get('/balance',async(req: Request,res:Response)=>{
     try {
-        console.log(req.userId);
-        
         const balance = await Account.findOne({
             userId: req.userId
         })
@@ -42,7 +40,6 @@ accountRouter.post('/transfer',async(req:Request,res:Response)=>{
         const toAccount = await Account.findOne({
             userId: to
         }).session(session);
-        console.log(to);
         
         if (!toAccount) {
             await session.abortTransaction();
