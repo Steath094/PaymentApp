@@ -17,11 +17,11 @@ userRouter.post('/signup',async (req: Request, res: Response) => {
         .max(15,"Username Should Be atMax 15 characters Long"),
         password: z
         .string()
-        .min(8, "Password should be at least 8 characters long")
-        .regex(/[a-z]/, "Password must include at least one lowercase letter")
-        .regex(/[A-Z]/, "Password must include at least one uppercase letter")
-        .regex(/[0-9]/, "Password must include at least one number")
-        .regex(/[^a-zA-Z0-9]/, "Password must include at least one special character"),
+        .min(8, "Password should be at least 8 characters long"),
+        // .regex(/[a-z]/, "Password must include at least one lowercase letter")
+        // .regex(/[A-Z]/, "Password must include at least one uppercase letter")
+        // .regex(/[0-9]/, "Password must include at least one number")
+        // .regex(/[^a-zA-Z0-9]/, "Password must include at least one special character"),
         firstName: z
         .string()
         .max(50,"First Name should be atMax 50 characters long"),
@@ -29,7 +29,6 @@ userRouter.post('/signup',async (req: Request, res: Response) => {
         .string()
         .max(50,"Last Name should be atMax 50 characters long"),
     })
-    
     const parsedData = requiredBody.safeParse(req.body);
     if (!parsedData.success) {
         res.status(400).json(new ApiError(400,"Invalid Input Format"));

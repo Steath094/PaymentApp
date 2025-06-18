@@ -4,6 +4,7 @@ import Button from '../components/Button'
 import { Link } from 'react-router-dom'
 
 export default function Signin() {
+
   return (
     <div className='h-screen w-screen bg-[#808080] flex justify-center items-center'>
         <div className='w-1/4 h-fit bg-white flex flex-col gap-3 p-6 rounded-md'>
