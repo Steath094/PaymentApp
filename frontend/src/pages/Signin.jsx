@@ -15,7 +15,7 @@ export default function Signin() {
             <Input label="Password" type="password" placeholder="Enter Your Password"/>
 
 
-            <Button text="Sign In" className="mt-2"/>
+            <Button text="Sign In" className="mt-2 bg-black hover:text-black"/>
 
             <div className='text-[14px] text-center font-semibold'>Don't have an account? <Link to={'/signup'} className='underline'>Sign Up</Link></div>
         </div>

@@ -3,7 +3,16 @@
 .profileImage {
   font-family: Arial, Helvetica, sans-serif;
   border-radius: 50%;
-  background: #f5f5f5;
   font-size: 1.5rem;
-  color: black;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
