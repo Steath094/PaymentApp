@@ -73,12 +73,10 @@ userRouter.post('/signin',async (req: Request,res: Response) =>{
             .max(15,"User should be atMax 15 character long"),
             password: z.string()
             .min(8,"Password should be atleast 8 character long")
-            .regex(/[a-z]/, "Password must include at least one lowercase letter")
-            .regex(/[A-Z]/, "Password must include at least one uppercase letter")
-            .regex(/[0-9]/, "Password must include at least one number")
-            .regex(/[^a-zA-Z0-9]/, "Password must include at least one special character")
         })
         const parsedData = requiredBody.safeParse(req.body);
+        console.log(parsedData);
+        
         if (!parsedData.success) {
             res.status(400).json(new ApiError(400,"Invalid Input Format"));
             return;
