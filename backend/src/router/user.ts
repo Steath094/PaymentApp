@@ -145,15 +145,16 @@ userRouter.put('/',authMiddleware,async(req: Request, res: Response)=>{
     }
 })
 
-userRouter.get('/bulk',async(req:Request,res:Response)=>{
+userRouter.get('/bulk',authMiddleware,async(req:Request,res:Response)=>{
     try {
         const name =req.query.filter || "";
         const users = await User.find({
-            $or:[
-                {firstName: {'$regex' : name, '$options' : 'i'}},
-                {lastName: {'$regex' : name, '$options' : 'i'}}
+            _id: { $ne: req.userId },
+            $or: [
+                { firstName: { $regex: name, $options: 'i' } },
+                { lastName: { $regex: name, $options: 'i' } }
             ]
-        }).select('_id userName firstName lastName')
+            }).select('_id userName firstName lastName');
         if (users.length==0) {
             res.status(200).json(new ApiResponse(200,[],"No Users Found"))
             return

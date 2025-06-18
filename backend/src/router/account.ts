@@ -10,7 +10,7 @@ accountRouter.get('/balance',async(req: Request,res:Response)=>{
     try {
         const balance = await Account.findOne({
             userId: req.userId
-        })
+        }).populate("userId", "firstName lastName");
         
         res.status(200).json(new ApiResponse(200,balance,"User's Balance Fetched Succesfully"))
         return
